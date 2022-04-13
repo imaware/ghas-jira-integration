@@ -299,6 +299,8 @@ class Alert(AlertBase):
     def severity(self):
         if "security_severity_level" in self.json["rule"]:
             return self.json["rule"]["security_severity_level"]
+        elif: "severity" in self.json["rule"]:
+            return self.json["rule"]["severity"]
         else:
             return "Unknown"
 
@@ -308,11 +310,11 @@ class Alert(AlertBase):
             return 'Highest'
         elif 'high' in sev:
             return 'High'
-        elif 'medium' in sev:
+        elif 'medium' or 'error' in sev:
             return 'Medium'
         elif 'low' in sev:
             return 'Low'
-        elif 'info' in sev:
+        elif 'info' or 'note' in sev:
             return 'Lowest'
         else:
             return 'Medium'
