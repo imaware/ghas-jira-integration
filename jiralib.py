@@ -175,6 +175,7 @@ class JiraProject:
         alert_num,
         repo_key,
         alert_key,
+        priority,
     ):
         raw = self.j.create_issue(
             project=self.projectkey,
@@ -192,6 +193,7 @@ class JiraProject:
             ),
             issuetype={"name": "Bug"},
             labels=self.labels,
+            priority={"name": priority},
         )
         logger.info(
             "Created issue {issue_key} for alert {alert_num} in {repo_id}.".format(

@@ -63,6 +63,7 @@ class Sync:
                 alert.number(),
                 alert.github_repo.get_key(),
                 alert.get_key(),
+                alert.priority(),
             )
             newissue.adjust_state(alert.get_state())
             return alert.get_state()

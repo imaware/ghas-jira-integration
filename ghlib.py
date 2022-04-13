@@ -296,6 +296,29 @@ class Alert(AlertBase):
     def short_desc(self):
         return self.json["rule"]["id"]
 
+    def severity(self):
+        if "security_severity_level" in self.json["rule"]:
+            return self.json["rule"]["security_severity_level"]
+        else:
+            return "Unknown"
+
+    def priority(self):
+        sev = self.severity().lower()
+        match sev:
+            case 'critical':
+                return "Highest"
+            case 'high':
+                return "High"
+            case 'medium':
+                return "Medium"
+            case 'low':
+                return "Low"
+            case 'info':
+                return "Lowest"
+            case _:
+                return "Medium"
+
+
     def get_key(self):
         return util.make_key(self.github_repo.repo_id + "/" + str(self.number()))
 
