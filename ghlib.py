@@ -312,7 +312,7 @@ class Alert(AlertBase):
             return 'High'
         elif 'medium' or 'error' in sev:
             return 'Medium'
-        elif 'low' in sev:
+        elif 'low' or 'warning' in sev:
             return 'Low'
         elif 'info' or 'note' in sev:
             return 'Lowest'
