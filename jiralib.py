@@ -128,7 +128,7 @@ class JiraProject:
                 project=self.projectkey,
                 summary=STATE_ISSUE_SUMMARY,
                 description=STATE_ISSUE_TEMPLATE,
-                issuetype={"name": "Bug"},
+                issuetype={"name": "Vulnerability"},
                 labels=self.labels,
             )
         elif len(issues) > 1:
@@ -165,6 +165,21 @@ class JiraProject:
             i.key, repo_id_to_fname(repo_id), util.state_to_json(state)
         )
 
+    def parseDescPriority(self, desc):
+        desc = desc.lower()
+        if "severity" not in desc:
+            return (False, None)
+        if "critical" in desc:
+            return (True, "Highest")
+        if "high" in desc:
+            return (True, "High")
+        if "medium" in desc:
+            return (True, "Medium")
+        if "low" in desc:
+            return (True, "Low")
+        
+        return (False, None)
+
     def create_issue(
         self,
         repo_id,
@@ -177,6 +192,11 @@ class JiraProject:
         alert_key,
         priority,
     ):
+        priority_override = self.parseDescPriority(long_desc)
+        
+        if priority_override[0]:
+            priority = priority_override[1]
+        
         raw = self.j.create_issue(
             project=self.projectkey,
             summary="{prefix} {short_desc} in {repo}".format(
@@ -191,7 +211,7 @@ class JiraProject:
                 repo_key=repo_key,
                 alert_key=alert_key,
             ),
-            issuetype={"name": "Bug"},
+            issuetype={"name": "Vulnerability"},
             labels=self.labels,
             priority={"name": priority},
         )
