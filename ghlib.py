@@ -304,19 +304,18 @@ class Alert(AlertBase):
 
     def priority(self):
         sev = self.severity().lower()
-        match sev:
-            case 'critical':
-                return "Highest"
-            case 'high':
-                return "High"
-            case 'medium':
-                return "Medium"
-            case 'low':
-                return "Low"
-            case 'info':
-                return "Lowest"
-            case _:
-                return "Medium"
+        if 'critical' in sev:
+            return 'Highest'
+        elif 'high' in sev:
+            return 'High'
+        elif 'medium' in sev:
+            return 'Medium'
+        elif 'low' in sev:
+            return 'Low'
+        elif 'info' in sev:
+            return 'Lowest'
+        else:
+            return 'Medium'
 
 
     def get_key(self):
