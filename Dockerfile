@@ -1,5 +1,4 @@
-FROM ubuntu:latest
-RUN apt-get update && apt-get install -y python3 python3-pip
+FROM python:3.10-buster
 RUN pip3 install pipenv
 COPY entrypoint.sh /entrypoint.sh
 COPY *.py gh2jira Pipfile /
