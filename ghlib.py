@@ -370,6 +370,12 @@ class Secret(AlertBase):
         return util.make_key(
             self.github_repo.repo_id + "/" + self.get_type() + "/" + str(self.number())
         )
+    
+    def isSkippable(self):
+        return False
+    
+    def priority(self):
+        return "Highest" 
 
     def do_adjust_state(self, target_state):
         state = "open"
