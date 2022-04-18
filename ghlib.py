@@ -18,6 +18,8 @@ WEBHOOK_CONFIG = """
 
 RESULTS_PER_PAGE = 100
 
+SKIPPABLE_TAGS = ["maintainability", "correctness"]
+
 logger = logging.getLogger(__name__)
 
 
@@ -295,6 +297,14 @@ class Alert(AlertBase):
 
     def short_desc(self):
         return self.json["rule"]["id"]
+
+    def isSkippable(self):
+        if "tags" not in self.json["rule"]:
+            return False
+        if any(tag in SKIPPABLE_TAGS for tag in self.json["rule"]["tags"]):
+            return True
+        return False
+
 
     def severity(self):
         if "security_severity_level" in self.json["rule"]:

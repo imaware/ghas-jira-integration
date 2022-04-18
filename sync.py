@@ -44,7 +44,7 @@ class Sync:
         self.sync(a, self.jira.fetch_issues(a.get_key()), DIRECTION_J2G)
 
     def sync(self, alert, issues, in_direction):
-        if alert is None:
+        if alert is None or alert.isSkippable():
             # there is no alert, so we have to remove all issues
             # that have ever been associated with it
             for i in issues:
